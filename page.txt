@@ -1,0 +1,32 @@
+'use client'
+import { useState } from 'react';
+import Image from 'next/image'
+import axios from 'axios'
+import WebSocket from 'react-websocket';
+
+
+export default function Home() {
+  const [receivedData, setReceivedData] = useState(null);
+
+  const handleData = (data) => {
+    // Aquí puedes manejar los datos recibidos del servidor WebSocket
+    setReceivedData(JSON.parse(data));
+  };
+
+  return (
+    <div>
+      {/* Otros componentes de tu aplicación */}
+      <WebSocket
+        url="ws://localhost:3002/movimiento"  // Cambia la URL según tu configuración
+        onMessage={handleData}
+      />
+      {/* Puedes mostrar los datos recibidos en tu interfaz de usuario */}
+      {receivedData && (
+        <div>
+          <h2>Datos recibidos:</h2>
+          <pre>{JSON.stringify(receivedData, null, 2)}</pre>
+        </div>
+      )}
+    </div>
+  )
+}
